@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Онлайн Семинар</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: row;
+            margin: 0;
+            height: 100vh;
+        }
+        #video-container {
+            flex: 1;
+            background-color: #000;
+            display: flex;
+            justify-content: center;
+            align-items: auto;
+        }
+        #chat-container {
+            width: 300px;
+            background-color: #f1f1f1;
+            display: flex;
+            flex-direction: column;
+            padding: 10px;
+        }
+        #chat-box {
+            flex: 1;
+            overflow-y: auto;
+            border: 1px solid #ccc;
+            margin-bottom: 10px;
+            padding: 5px;
+            background-color: white;
+        }
+        #input-container {
+            display: flex;
+        }
+        #text-input {
+            flex: 1;
+            padding: 5px;
+            border: 1px solid #ccc;
+        }
+        button {
+            padding: 10px;
+            margin-left: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        #controls {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+        }
+        video {
+          width: 100%;
+          height: auto;
+        }
+        .video.video {
+          width: 30%;
+        }
+    </style>
+</head>
+<header>
+  
+</header>
+<body>
+    <div id="video-container">
+        <video id="demo"></video>
+        <video id="video"></video>
+        <div id="controls">
+            <button id="mic-button">🔊 Микрофон</button>
+            <button id="camera-button">📷 Камера</button>
+            <button id="start">Начать демонстрацию экрана</button>
+        </div>
+    </div>
+    <div id="chat-container">
+        <div id="chat-box">
+            <div>Привет! Добро пожаловать на семинар!</div>
+        </div>
+        <div id="input-container">
+            <input type="text" id="text-input" placeholder="Введите сообщение..." />
+            <button id="send-button">Отправить</button>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('send-button').onclick = function() {
+            const textInput = document.getElementById('text-input');
+            const chatBox = document.getElementById('chat-box');
+            if (textInput.value) {
+                const message = document.createElement('div');
+                message.textContent = textInput.value;
+                chatBox.appendChild(message);
+                chatBox.scrollTop = chatBox.scrollHeight; // Прокрутка к последнему сообщению
+                textInput.value = ''; // Очистка поля ввода
+            }
+        };
+
+        // Пример функции для управления звуком и видео (пока не реализован)
+        document.getElementById('mic-button').onclick = function() {
+            alert('Звук включен/выключен!');
+        };
+
+        document.getElementById('camera-button').onclick = function() {
+            alert('Камера включена/выключена!');
+        };
+
+        navigator.mediaDevices.getUserMedia({ video: true })
+        .then(function (stream) {
+          var video = document.querySelector('#video');
+          video.srcObject = stream;
+          video.onloadedmetadata = function (e) {
+            video.play();
+          };
+        })
+        .catch(function (err) {
+          console.log('Возникла ошибка! ' + err);
+        });
+
+        document.getElementById('start').onclick = function() {
+        navigator.mediaDevices.getDisplayMedia({ video: true })
+          .then(function(stream) {
+            var video = document.getElementById('demo');
+            video.srcObject = stream;
+            video.onloadedmetadata = function (e) {
+              video.play();
+            };
+          })
+          .catch(function(err) {
+            console.error('Ошибка доступа к экрану: ', err);
+          });
+        };
+    </script>
+  </body>
+</html>

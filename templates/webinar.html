@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Доступ к камере</title>
+  </head>
+  <body>
+    <h1>Доступ к камере пользователя</h1>
+
+    <video id="video">Тут должно быть видео</video>
+
+    <script>
+      // запрашиваем доступ к камере
+      navigator.mediaDevices.getUserMedia({ video: true })
+        .then(function (stream) {
+          var video = document.querySelector('#video');
+          video.srcObject = stream;
+          video.onloadedmetadata = function (e) {
+            video.play();
+          };
+        })
+        .catch(function (err) {
+          console.log('Возникла ошибка! ' + err);
+        });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Доступ к экрану</title>
+    <style>
+      #video {
+        width: 50%;
+        height: auto;
+        border: 1px solid black;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Доступ к экрану пользователя</h1>
+    <video id="video" autoplay></video>
+    <button id="start">Начать демонстрацию экрана</button>
+
+    <script>
+      document.getElementById('start').onclick = function() {
+        navigator.mediaDevices.getDisplayMedia({ video: true })
+          .then(function(stream) {
+            var video = document.getElementById('video');
+            video.srcObject = stream;
+            video.onloadedmetadata = function (e) {
+              video.play();
+            };
+          })
+          .catch(function(err) {
+            console.error('Ошибка доступа к экрану: ', err);
+          });
+        };
+    </script>
+  </body>
+</html>
